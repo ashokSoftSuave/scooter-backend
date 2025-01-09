@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/connection.js";
-import { articleInfoModel } from "./artilelinfo.model.js";
+import { articleInfoModel } from "./articlelinfo.model.js";
 
 
 

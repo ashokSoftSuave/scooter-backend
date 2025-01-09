@@ -1,7 +1,7 @@
 import express from 'express';
 import { createUser, getUser } from '../services/user.service.js';
 import { validateHashing } from '../utilites/hashing.js';
-import { genToken } from '../utilites/token.js';
+import { genToken, getTokenAndValidate } from '../utilites/token.js';
 
 
 const userRouter = express.Router();
@@ -12,18 +12,18 @@ userRouter.post('/signup', async (req, res) => {
         if (username && password && email) {
             const create = await createUser(username, password, email)
             if (create) {
-                res.status(200).send("signup successfull")
+                res.status(200).send({ statusCode: 200, msg: "signup successfull" })
             }
             else {
-                res.status(401).send("error in sign up")
+                res.status(400).send({ statusCode: 400, msg: "try different usernam and email sign up" })
             }
         }
         else {
-            res.status(401).send("username and password is mandatory")
+            res.status(400).send({ statusCode: 400, msg: "username and password is mandatory" })
         }
     }
     catch (err) {
-        res.status(401).send(err + "")
+        res.status(401).send(err.message)
     }
 
 
@@ -38,23 +38,28 @@ userRouter.post('/login', async (req, res) => {
                 const validate = await validateHashing(password, loggeduser.password)
                 if (validate) {
                     const token = await genToken(loggeduser)
-                    res.status(200).send({ token: token, status: "login successsfull" })
+                    res.status(200).send({
+                        token: token,
+                        username: loggeduser.username,
+                        email: loggeduser.email,
+                        status: "login successsfull"
+                    })
                 }
                 else {
-                    res.status(401).send("password is wrong")
+                    res.status(400).send({ statusCode: 400, status: "password is wrong" })
                 }
             }
             else {
-                res.status(400).send("user is not found")
+                res.status(400).send({ statusCode: 400, status: "user is not found" })
             }
 
         }
         else {
-            res.status(401).send("username and password is mandatory")
+            res.status(400).send({ statusCode: 400, status: "username and password is mandatory" })
         }
     }
     catch (err) {
-        res.status(401).send(err + "")
+        res.status(400).send(err.message)
     }
 })
 

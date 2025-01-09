@@ -7,7 +7,7 @@ const validateToken = async (token) => {
     try {
         const validation = jwt.verify(token, process.env.JWT_KEY);
         return validation;
-    } catch (e) {
+    } catch (err) {
         return false;
     }
 }
@@ -18,27 +18,28 @@ const genToken = async (userdata) => {
         return token
     }
     catch (err) {
-        console.log(err + "")
+        console.log(err)
     }
 }
 
 const getTokenAndValidate = async (req, res, next) => {
     try {
         const token = req.header('Authorization');
-        if (token) {
-            const response = await validateToken(token);
+        const t = token.split(" ")[1]
+        if (t) {
+            const response = await validateToken(t);
             if (response) {
-                req.body['type'] = response;
+                req.body['token_data'] = response
                 next();
             } else {
-                res.send({ statusCode: 400, msg: "Invalied token" });
+                res.status(400).send({ statusCode: 400, msg: "Invalied token" });
             }
         }
         else {
-            res.status(401).send("token is missing..")
+            res.status(400).send({ statusCode: 400, msg: "token is missing.." })
         }
-    } catch (e) {
-        res.send(e.message)
+    } catch (err) {
+        res.send(err.message)
     }
 }
 
