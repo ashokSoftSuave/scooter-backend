@@ -39,7 +39,7 @@ articleController.get('/singlearticle', async (req, res) => {
 
 articleController.put('/updatearticle', async (req, res) => {
     try {
-        const data = await updateArticle(req.body)
+        const data = await updateArticle(req.body[0])
         if (data) {
             res.status(200).send({ statusCode: 200, status: "Data Updated successfully" })
         }
