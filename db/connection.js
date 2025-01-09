@@ -12,7 +12,8 @@ export const sequelize = new Sequelize(process.env.DATABASE, process.env.USER, p
 try {
     await sequelize.authenticate()
     console.log("Database connected successfully")
+    await sequelize.sync({ alter: true });
 }
 catch (err) {
-    console.log(err + "")
+    console.log("Data Base connection Failed: Err", err);
 }

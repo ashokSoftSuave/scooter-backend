@@ -18,7 +18,7 @@ const genToken = async (userdata) => {
         return token
     }
     catch (err) {
-        console.log(err)
+        console.log("Error while Gen Token : Err", err);
     }
 }
 
@@ -29,17 +29,16 @@ const getTokenAndValidate = async (req, res, next) => {
         if (t) {
             const response = await validateToken(t);
             if (response) {
-                req.body['token_data'] = response
                 next();
             } else {
-                res.status(400).send({ statusCode: 400, msg: "Invalied token" });
+                res.status(400).send({ statusCode: 400, msg: "Invalid token" });
             }
         }
         else {
-            res.status(400).send({ statusCode: 400, msg: "token is missing.." })
+            res.status(400).send({ statusCode: 400, msg: "Token Not Found" })
         }
     } catch (err) {
-        res.send(err.message)
+        res.status(400).send({ statusCode: 400, msg: "Token Validation Failed" })
     }
 }
 

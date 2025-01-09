@@ -25,7 +25,7 @@ const getArticle = async () => {
         return data;
     }
     catch (err) {
-        console.log(err)
+        console.log("Error while get  Article : Err", err)
     }
 }
 
@@ -49,7 +49,7 @@ const getSingleArticle = async (pts_id) => {
         return data;
     }
     catch (err) {
-        console.log(err)
+        console.log("Error while get SingleArticle : Err", err)
     }
 }
 
@@ -57,11 +57,7 @@ const getSingleArticle = async (pts_id) => {
 const updateArticle = async (data) => {
     const transaction = await sequelize.transaction()
     try {
-        const { miscellaneous_info, milestone, event, token_data, ...articleinfo } = data
-        // const {id_miscellaneous_info, pts_id_miscellaneous_info ,...miscellaneous_info_ok} = miscellaneous_info
-        // const {id_milestone, pts_id_milestone ,...milestone_ok} = milestone
-        // const {id_event, pts_id_event ,...event_ok} = event
-
+        const { miscellaneous_info, milestone, event, ...articleinfo } = data
         const pts_id = articleinfo.pts_id;
 
 
@@ -73,6 +69,7 @@ const updateArticle = async (data) => {
             },
             transaction
         })
+
         const u_miscellaneousinfo = await miscellaneousInfoModel.update({
             ...miscellaneous_info,
         }, {
@@ -82,6 +79,7 @@ const updateArticle = async (data) => {
             },
             transaction
         })
+
         const u_milestone = await mileStoneModel.update({
             ...milestone,
         }, {
@@ -91,6 +89,7 @@ const updateArticle = async (data) => {
             },
             transaction
         })
+
         const u_event = await eventsModel.update({
             ...event,
         }, {
@@ -101,31 +100,19 @@ const updateArticle = async (data) => {
             transaction
         })
 
-        console.log(
-            u_articleinfo[0],
-            u_miscellaneousinfo[0],
-            u_milestone[0],
-            u_event[0]
-        )
-
-
         if (u_articleinfo[0] && u_miscellaneousinfo[0] && u_milestone[0] && u_event[0]) {
             await transaction.commit();
             return true;
         }
         else {
             await transaction.rollback();
-            console.log("rollback")
-            return false;
         }
 
 
     }
     catch (err) {
-        console.log(err.message)
+        console.log("Error while update article : Err", err)
         await transaction.rollback();
-        console.log("rollback")
-        return false
     }
 }
 

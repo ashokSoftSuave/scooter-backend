@@ -41,14 +41,3 @@ export const mileStoneModel = sequelize.define('milestones', {
 articleInfoModel.hasOne(mileStoneModel, { foreignKey: 'pts_id' });
 mileStoneModel.belongsTo(articleInfoModel, { foreignKey: 'pts_id' });
 
-const mileStonesTable = async () => {
-    try {
-        await mileStoneModel.sync({ alter: true })
-        console.log("milestonestable table is created")
-    }
-    catch (err) {
-        console.log(err + "")
-    }
-}
-
-// mileStonesTable()

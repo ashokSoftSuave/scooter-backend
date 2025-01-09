@@ -97,15 +97,3 @@ export const articleInfoModel = sequelize.define('articleinfo', {
 }, {
     tableName: 'articleinfo'
 })
-
-const articleInfoTable = async () => {
-    try {
-        await articleInfoModel.sync({ alter: true })
-        console.log("articleinfotable is created or altered")
-    }
-    catch (err) {
-        console.log(err + "")
-    }
-}
-
-// articleInfoTable()

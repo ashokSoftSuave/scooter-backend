@@ -68,14 +68,3 @@ export const miscellaneousInfoModel = sequelize.define('miscellaneous_info', {
 articleInfoModel.hasOne(miscellaneousInfoModel, { foreignKey: 'pts_id' });
 miscellaneousInfoModel.belongsTo(articleInfoModel, { foreignKey: 'pts_id' });
 
-const miscellaneousInfoTable = async () => {
-    try {
-        await miscellaneousInfoModel.sync({ alter: true })
-        console.log("miscellaneousInfotable table is created")
-    }
-    catch (err) {
-        console.log(err + "")
-    }
-}
-
-// miscellaneousInfoTable()

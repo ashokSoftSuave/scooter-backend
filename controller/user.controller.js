@@ -1,35 +1,36 @@
 import express from 'express';
 import { createUser, getUser } from '../services/user.service.js';
 import { validateHashing } from '../utilites/hashing.js';
-import { genToken, getTokenAndValidate } from '../utilites/token.js';
+import { genToken } from '../utilites/token.js';
 
 
-const userRouter = express.Router();
+const userController = express.Router();
 
-userRouter.post('/signup', async (req, res) => {
+userController.post('/signup', async (req, res) => {
     try {
         const { username, password, email } = req.body
         if (username && password && email) {
             const create = await createUser(username, password, email)
             if (create) {
-                res.status(200).send({ statusCode: 200, msg: "signup successfull" })
+                res.status(200).send({ statusCode: 200, status: "signup successfull" })
             }
             else {
-                res.status(400).send({ statusCode: 400, msg: "try different usernam and email sign up" })
+                res.status(400).send({ statusCode: 400, status: "Email already present. Try different email for sign up" })
             }
         }
         else {
-            res.status(400).send({ statusCode: 400, msg: "username and password is mandatory" })
+            res.status(400).send({ statusCode: 400, status: "Username and Password is mandatory" })
         }
     }
     catch (err) {
-        res.status(401).send(err.message)
+        console.log("something went worng : Err", err)
+        res.status(400).send({ statusCode: 400, status: "Oops! Something went wrong. Please try again later" })
     }
 
 
 })
 
-userRouter.post('/login', async (req, res) => {
+userController.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body
         if (email && password) {
@@ -50,17 +51,18 @@ userRouter.post('/login', async (req, res) => {
                 }
             }
             else {
-                res.status(400).send({ statusCode: 400, status: "user is not found" })
+                res.status(400).send({ statusCode: 400, status: "We couldn't find the user you're looking for. Please check the details and try again." })
             }
 
         }
         else {
-            res.status(400).send({ statusCode: 400, status: "username and password is mandatory" })
+            res.status(400).send({ statusCode: 400, status: "Username and password are required. Please fill in both fields." })
         }
     }
     catch (err) {
-        res.status(400).send(err.message)
+        console.log("something went worng : Err", err)
+        res.status(400).send({ statusCode: 400, status: "Oops! Something went wrong. Please try again later" })
     }
 })
 
-export default userRouter
+export default userController

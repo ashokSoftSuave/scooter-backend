@@ -19,21 +19,10 @@ export const userModel = sequelize.define('user', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        // unique:true
     }
 
 }, {
     tableName: 'user',
 })
 
-const userTable = async () => {
-    try {
-        await userModel.sync({ alter: true })
-        console.log("user table created or altered")
-    }
-    catch (err) {
-        console.log(err + "")
-    }
-}
 
-// userTable()

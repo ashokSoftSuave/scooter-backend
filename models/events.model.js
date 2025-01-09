@@ -69,14 +69,3 @@ articleInfoModel.hasOne(eventsModel, { foreignKey: 'pts_id' });
 eventsModel.belongsTo(articleInfoModel, { foreignKey: 'pts_id' });
 
 
-const eventsTable = async () => {
-    try {
-        await eventsModel.sync({ alter: true })
-        console.log("eventsTable table is created")
-    }
-    catch (err) {
-        console.log(err + "")
-    }
-}
-
-// eventsTable()

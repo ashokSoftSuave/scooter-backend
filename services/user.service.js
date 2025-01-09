@@ -13,26 +13,27 @@ const createUser = async (username, password, email) => {
         return data;
     }
     catch (err) {
-        return false;
+        console.log("Error while create User : Err", err);
+        return err;
     }
 }
 
 const getUser = async (email) => {
     try {
         const data = await userModel.findOne({
-            attributes:['username', 'email' , 'password'],
+            attributes: ['username', 'email', 'password'],
             where: {
                 email: email
             }
         })
-        if(!data){
+        if (!data) {
             return false
         }
         return data.dataValues
     }
     catch (err) {
-        console.log(err + "")
-        return err
+        console.log("Error while get user : Err", err)
+        return err;
     }
 }
 
