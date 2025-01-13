@@ -14,7 +14,7 @@ const createUser = async (username, password, email) => {
     }
     catch (err) {
         console.log("Error while create User : Err", err);
-        return err;
+        throw new Error(err)
     }
 }
 
@@ -33,7 +33,7 @@ const getUser = async (email) => {
     }
     catch (err) {
         console.log("Error while get user : Err", err)
-        return err;
+        throw new Error(err)
     }
 }
 

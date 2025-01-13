@@ -26,6 +26,7 @@ const getArticle = async () => {
     }
     catch (err) {
         console.log("Error while get  Article : Err", err)
+        throw new Error(err)
     }
 }
 
@@ -50,6 +51,7 @@ const getSingleArticle = async (pts_id) => {
     }
     catch (err) {
         console.log("Error while get SingleArticle : Err", err)
+        throw new Error(err)
     }
 }
 
@@ -113,6 +115,7 @@ const updateArticle = async (data) => {
     catch (err) {
         console.log("Error while update article : Err", err)
         await transaction.rollback();
+        throw new Error(err)
     }
 }
 
